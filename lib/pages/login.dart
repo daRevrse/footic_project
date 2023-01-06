@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:footic/pages/home.dart';
+import 'package:footic/pages/root.dart';
 import 'package:footic/pages/register.dart';
+import 'package:get_storage/get_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  GetStorage box = GetStorage();
+
   final _formKey = GlobalKey<FormState>();
   late String _email, _password;
 
@@ -68,11 +71,38 @@ class _LoginPageState extends State<LoginPage> {
       // Appeler l'API de connexion ici
       print(_email);
       print(_password);
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-              (Route<dynamic> route) => false
-      );
+
+      if(box.read('email') == _email && box.read('password') == _password) {
+        box.write('isLogged',true);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => RootPage()),
+                (Route<dynamic> route) => false
+        );
+      } else {
+          showErrorDialog();
+      }
+
     }
+  }
+
+  void showErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Erreur'),
+          content: Text('Les informations sont incorrectes'),
+          actions: [
+            ElevatedButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

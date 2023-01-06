@@ -1,174 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:footic/pages/profile.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>  with SingleTickerProviderStateMixin{
-
-  late TabController _tabController;
-  int _selectedIndexBottom = 0;
-  final List<Widget> _children = [
-    Center(
-      child: Container(
-        child: Image.asset("assets/dispo.png"),
-      ),
-    ),
-    Center(
-      child: Container(
-        child: Image.asset("assets/dispo.png"),
-      ),
-    ),
-    Center(
-      child: Container(
-        child: Image.asset("assets/dispo.png"),
-      ),
-    ),
-    ProfilePage()
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndexBottom = index;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 6, vsync: this);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.deepPurple,));
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-
-
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _selectedIndexBottom == 0 ? PreferredSize(
-        preferredSize: Size.fromHeight(150),
+      appBar: AppBar(
+        title: Text('Accueil'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 30.0,left: 30.0,right: 30.0),
-              child: Container(
-                child: Padding(
-                  padding: EdgeInsets.only(top:25.0,bottom: 8.0),
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                      ),
-                      hintText: 'Search...',
-                      prefixIcon: Icon(Icons.search),
-                      suffixIcon: Icon(Icons.filter_list),
-                      hintStyle: TextStyle(fontStyle: FontStyle.italic),
-
-                    ),
-                  ),
-                ),
-              ),
+            Text(
+              'Bienvenue sur votre plateforme de freelancing !',
+              style: Theme.of(context).textTheme.headline4,
             ),
-            TabBar(
-              controller: _tabController,
-              tabs: const [
-                Tab(icon: Icon(Icons.home)),
-                Tab(icon: Icon(Icons.favorite)),
-                Tab(icon: Icon(Icons.settings)),
-                Tab(icon: Icon(Icons.home)),
-                Tab(icon: Icon(Icons.favorite)),
-                Tab(icon: Icon(Icons.settings)),
-              ],
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: Colors.deepPurple,
-              labelColor: Colors.deepPurple,
+            SizedBox(height: 16),
+            Text(
+              'Vous trouverez ci-dessous vos projets en cours et terminés :',
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+            SizedBox(height: 16),
+            Expanded(
+              child: ListView(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.check_circle, color: Colors.green),
+                    title: Text('Projet 1'),
+                    subtitle: Text('Terminé'),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.check_circle, color: Colors.green),
+                    title: Text('Projet 2'),
+                    subtitle: Text('Terminé'),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.timer, color: Colors.orange),
+                    title: Text('Projet 3'),
+                    subtitle: Text('En cours'),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
-      ) : PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: Padding(
-          padding: EdgeInsets.only(top: 30.0,left: 30.0,right: 30.0),
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.only(top:25.0,bottom: 8.0),
-              child: Container(),
-            ),
-          ),
-        ),
       ),
-      body: _selectedIndexBottom == 0 ? TabBarView(
-        controller: _tabController,
-        children: [
-          Center(
-            child: Container(
-              child: Image.asset("assets/dispo.png"),
-            ),
-          ),
-          Center(
-            child: Container(
-              child: Image.asset("assets/dispo.png"),
-            ),
-          ),
-          Center(
-            child: Container(
-              child: Image.asset("assets/dispo.png"),
-            ),
-          ),
-          Center(
-            child: Container(
-              child: Image.asset("assets/dispo.png"),
-            ),
-          ),
-          Center(
-            child: Container(
-              child: Image.asset("assets/dispo.png"),
-            ),
-          ),
-          Center(
-            child: Container(
-              child: Image.asset("assets/dispo.png"),
-            ),
-          ),
-        ],
-      ) : _children[_selectedIndexBottom],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: Colors.deepPurple,
-        unselectedItemColor: Colors.grey,
-        currentIndex: _selectedIndexBottom,
-        onTap: _onItemTapped,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          // Insérez ici le code pour ajouter un nouveau projet
+        },
       ),
     );
   }
 }
-

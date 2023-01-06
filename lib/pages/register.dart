@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'home.dart';
+import 'package:get_storage/get_storage.dart';
+import 'root.dart';
 import 'login.dart';
 
 class SignupPage extends StatefulWidget {
@@ -11,6 +11,8 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  GetStorage box = GetStorage();
+
   final _formKey = GlobalKey<FormState>();
   late String _name, _email, _password;
 
@@ -29,7 +31,10 @@ class _SignupPageState extends State<SignupPage> {
                 }
                 return null;
               },
-              onSaved: (input) => _name = input!,
+              onSaved: (input) {
+                _name = input!;
+                //box.write('name',_name);
+              },
               decoration: InputDecoration(labelText: 'Nom'),
             ),
             TextFormField(
@@ -39,7 +44,10 @@ class _SignupPageState extends State<SignupPage> {
                 }
                 return null;
               },
-              onSaved: (input) => _email = input!,
+              onSaved: (input) {
+                _email = input!;
+                //box.write('email',_email);
+              },
               decoration: InputDecoration(labelText: 'Adresse e-mail'),
             ),
             TextFormField(
@@ -49,7 +57,10 @@ class _SignupPageState extends State<SignupPage> {
                 }
                 return null;
               },
-              onSaved: (input) => _password = input!,
+              onSaved: (input) {
+                _password = input!;
+                //box.write('_password',_password);
+              },
               decoration: InputDecoration(labelText: 'Mot de passe'),
               obscureText: true,
             ),
@@ -81,9 +92,13 @@ class _SignupPageState extends State<SignupPage> {
       print(_name);
       print(_email);
       print(_password);
+      box.write('name',_name);
+      box.write('email',_email);
+      box.write('password',_password);
+      box.write('isLogged',true);
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+          MaterialPageRoute(builder: (BuildContext context) => RootPage()),
               (Route<dynamic> route) => false
       );
     }

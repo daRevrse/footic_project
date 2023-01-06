@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:footic/pages/root.dart';
 import 'package:footic/pages/login.dart';
+import 'package:get_storage/get_storage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +18,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: _sessionTest(),
       debugShowCheckedModeBanner: false,
     );
+  }
+
+  Widget _sessionTest(){
+    GetStorage box = GetStorage();
+
+    if(box.read('isLogged') == true) {
+      return const RootPage();
+    }
+    else{
+      return const LoginPage();
+    }
   }
 }
